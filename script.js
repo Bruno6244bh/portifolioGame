@@ -27,11 +27,13 @@ function drawFrames(posX, posY, canvasX, canvasY) {
 }
 
 const images = [1, 0, 1, 2]; // sprites's order in spritesheet to animation
-let indexImage = 0; // array position
+let indexImage = 2; // array position
 let countingFrames = 0; // scoring position in spritesheet
 let currentDirection = 0; // sprite direction
 
 function step() {
+
+    cancelAnimationFrame(idle)
 
     countingFrames++;
     if(countingFrames < 13) {
@@ -48,19 +50,41 @@ function step() {
     window.requestAnimationFrame(step);
 }
 
+
+function idle() {
+
+    if(currentDirection === 0) {
+        indexImage = 2;
+    } else if ( currentDirection === 1) {
+        indexImage = 5
+    } else if (currentDirection === 2) {
+        indexImage = 8
+    } else if (currentDirection === 3) {
+        indexImage = 11
+    }
+
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    drawFrames(images[indexImage], currentDirection, positionX, positionY);
+}
+
+
 function init() {
-    window.requestAnimationFrame(step);
+    window.requestAnimationFrame(idle);
 }
 
 window.addEventListener('keydown', (event) => {
     if (event.keyCode === 37) {
         left = true;
+        step()
     } else if (event.keyCode === 39) {
         right = true;
+        step()
     } else if (event.keyCode === 38) {
         up = true
+        step()
     } else if (event.keyCode === 40) {
         down = true;
+        step()
     } 
 } )
 
@@ -97,6 +121,3 @@ const game = () => {
     drawFrames();
 }
 requestAnimationFrame(game)
-
-
-
