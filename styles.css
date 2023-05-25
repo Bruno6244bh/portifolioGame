@@ -6,4 +6,5 @@ canvas {
     left: 0; 
     right: 0;
     margin: auto;
+    background-image: url(./sources/TileMap.png);
 }

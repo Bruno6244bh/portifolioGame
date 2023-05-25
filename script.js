@@ -5,48 +5,51 @@ img.onload = function() { // função que será executada assim que o objeto "im
 }
 
 let canvas = document.querySelector('canvas'); // referencia ao objeto "canvas" no javascript
-let contexto = canvas.getContext('2d');
-const escala = 1; // constante para escalar o tamanho do personagem
-const largura = 48; // contante de largura do personagem
-const altura = 63; //constante de altura o personagem
-const escalaLargura = escala * largura; //constante que multiplica a largura com escala
-const escalaAltura = escala * altura; //constante que multiplica a altura com escala
-let posicaoX = 0; //variavel que define a posição do personagem no eixo x do mapa
-let posicaoY = 0; //variavel que define a posição do personagem no eixo y do mapa
-let velocidade = 1.5 //variavel que define a velocidade memrelação a movimentação do personagem
+let context = canvas.getContext('2d');
+const escale = 1; // constant to scale character's size
+const Width = 48; // character's width
+const Height = 63; // character's height
+const escaleWidth = escale * Width;
+const escaleHeight = escale * Height;
+let positionX = 0; //variable that define character's position on the X axis
+let positionY = 0; //variable that define character's position on the Y axis
+let speed = 1.5 //variable that defines character's speed
+
+//variables above define character's current direction 
 let up = false;
 let down = false;
 let right = false;
 let left = false;
 
-function desenhaQuadro(posX, posY, canvasX, canvasY) {
-    // contexto.clearRect(0, 0, canvas.width, canvas.height);
-    contexto.drawImage(img, posX*largura, posY*altura, largura, altura, canvasX, canvasY, escalaLargura, escalaAltura);
+function drawFrames(posX, posY, canvasX, canvasY) {
+    // context.clearRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(img, posX*Width, posY*Height, Width, Height, canvasX, canvasY, escaleWidth, escaleHeight);
 }
 
-const imagens = [1, 0, 1, 2]; // vetor que define a ordem dos sprites na animação
-let indiceImagem = 0; // variavel que vai buscar a posição do vetor
-let contaQuadro = 0; // variavel que vai contar os sprites
-let direcaoAtual = 0; // variavel que ocnta a direção dos sprites
+const images = [1, 0, 1, 2]; // sprites's order in spritesheet to animation
+let indexImage = 0; // array position
+let countingFrames = 0; // scoring position in spritesheet
+let currentDirection = 0; // sprite direction
 
-function passo() {
-    contaQuadro++;
-    if(contaQuadro < 13) {
-        window.requestAnimationFrame(passo);
+function step() {
+
+    countingFrames++;
+    if(countingFrames < 13) {
+        window.requestAnimationFrame(step);
         return;
     }
-    contaQuadro = 0;
-    contexto.clearRect(0, 0, canvas.width, canvas.height);
-    desenhaQuadro(imagens[indiceImagem], direcaoAtual, posicaoX, posicaoY);
-    indiceImagem++;
-    if(indiceImagem >= imagens.length) {
-        indiceImagem = 0;
+    countingFrames = 0;
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    drawFrames(images[indexImage], currentDirection, positionX, positionY);
+    indexImage++;
+    if(indexImage >= images.length) {
+        indexImage = 0;
     }
-    window.requestAnimationFrame(passo);
+    window.requestAnimationFrame(step);
 }
 
 function init() {
-    window.requestAnimationFrame(passo);
+    window.requestAnimationFrame(step);
 }
 
 window.addEventListener('keydown', (event) => {
@@ -75,22 +78,25 @@ window.addEventListener('keyup', (event) => {
 
 const game = () => {
     if (up === true) {
-        posicaoY -= velocidade;
-        direcaoAtual = 3
+        positionY -= speed;
+        currentDirection = 3
     }
     if (down === true) {
-        posicaoY += velocidade;
-        direcaoAtual = 0
+        positionY += speed;
+        currentDirection = 0
     }
     if (left === true) {
-        posicaoX -= velocidade;
-        direcaoAtual = 1
+        positionX -= speed;
+        currentDirection = 1
     }
     if (right === true) {
-        posicaoX += velocidade;
-        direcaoAtual = 2
+        positionX += speed;
+        currentDirection = 2
     }
     requestAnimationFrame(game);
-    desenhaQuadro();
+    drawFrames();
 }
 requestAnimationFrame(game)
+
+
+
