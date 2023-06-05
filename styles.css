@@ -1,10 +1,4 @@
-canvas {
-    border: solid 1px black;
-    position: absolute;
-    top: 0; 
-    bottom: 0;
-    left: 0; 
-    right: 0;
-    margin: auto;
-    background-image: url(./sources/TileMap.png);
+body {
+    background-color: black;
+    margin: 0;
 }
